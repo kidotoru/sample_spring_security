@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <b:beans xmlns:b="http://www.springframework.org/schema/beans"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://www.springframework.org/schema/security"
-         xmlns:p="http://www.springframework.org/schema/p"
-         xmlns:util="http://www.springframework.org/schema/util"
-         xsi:schemaLocation="
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://www.springframework.org/schema/security"
+		 xmlns:p="http://www.springframework.org/schema/p"
+		 xmlns:util="http://www.springframework.org/schema/util"
+		 xsi:schemaLocation="
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd
 	http://www.springframework.org/schema/beans 
@@ -12,25 +12,28 @@
 	http://www.springframework.org/schema/util 
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/login.html" access="permitAll"/>
-        <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
-        <form-login login-page='/login.html' default-target-url='/'
-                    always-use-default-target='true' 
-                    authentication-failure-url="/login.html?error=true" />
-        <logout logout-success-url="/login.html?logout" />
-    </http>
+	<http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/login.html" access="permitAll"/>
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+		<form-login login-page='/login.html' default-target-url='/'
+					always-use-default-target='true' 
+					authentication-failure-url="/login.html?error=true" />
+		<logout logout-success-url="/login.html?logout" />
+		<custom-filter ref="myFillter" after="FILTER_SECURITY_INTERCEPTOR"/>		
+	</http>
 
-    <authentication-manager>
-        <authentication-provider ref="myAuthenticationProvider" >
-        </authentication-provider>
-    </authentication-manager>
-    <b:bean id="myAuthenticationProvider" class="net.treewoods.sample.spring.security.MyAuthenticationProvider">
-        <b:property name="userDetailsService" ref="myUserDetailsService">
-        </b:property>
-    </b:bean>
+	<authentication-manager>
+		<authentication-provider ref="myAuthenticationProvider" >
+		</authentication-provider>
+	</authentication-manager>
+	<b:bean id="myAuthenticationProvider" class="net.treewoods.sample.spring.security.MyAuthenticationProvider">
+		<b:property name="userDetailsService" ref="myUserDetailsService">
+		</b:property>
+	</b:bean>
  
-    <b:bean id="myUserDetailsService" class="net.treewoods.sample.spring.security.MyUserDetailsService">
-    </b:bean>
+	<b:bean id="myUserDetailsService" class="net.treewoods.sample.spring.security.MyUserDetailsService">
+	</b:bean>
     
+	<b:bean id="myFillter" class="net.treewoods.sample.spring.security.MyFilter" />
+	
 </b:beans>
